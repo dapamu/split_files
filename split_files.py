@@ -20,17 +20,22 @@ def path_file_names(file):
 
 #split pages of pdf file into separate files
 def pdf(file, extension):
-	fh = PdfReader(file)
 	file_path, file_name = path_file_names(file)
+
+	print(f"Selected file: " + file + "\n")
 
 	#lines = fh.pages[0]
 	#print(lines.extract_text())
-	
-	for i in range(len(fh.pages)):
-		output = PdfWriter()
-		output.add_page(fh.pages[i])
-		with open(file_path + file_name + "_" + str(i) + "." + extension, "wb") as outputStream:
-			output.write(outputStream)
+	try:
+		fh = PdfReader(file)
+
+		for i in range(len(fh.pages)):
+			output = PdfWriter()
+			output.add_page(fh.pages[i])
+			with open(file_path + file_name + "_" + str(i) + "." + extension, "wb") as outputStream:
+				output.write(outputStream)
+	except:
+		print(f"File type {extension} not supported")
 
 #extract information from pdf file
 def pdf_info(file):
@@ -46,18 +51,26 @@ def excel(file, extension):
 
 	file_path, file_name = path_file_names(file)
 
-	excel_app = xw.App(visible=False)
-	wb = excel_app.books.open(file)
-	for sheet in wb.sheets:
-		sheet.api.Copy()
-		wb_new = xw.books.active
-		wb_new.save(f"{file_path}{sheet.name}.{extension}")
-		wb_new.close()
-	excel_app.quit()
+	print(f"Selected file: " + file + "\n")
 
+	try:
+		excel_app = xw.App(visible=False)
+		wb = excel_app.books.open(file)
+		for sheet in wb.sheets:
+			sheet.api.Copy()
+			wb_new = xw.books.active
+			wb_new.save(f"{file_path}{sheet.name}.{extension}")
+			wb_new.close()
+		excel_app.quit()
+	except:
+		print(f"File type {extension} not supported")
 
 #do something with text files
 def text(file):
+	file_path, file_name = path_file_names(file)
+
+	print(f"Selected file: " + file + "\n")
+
 	with open(file, 'r') as fh:
 		lines = fh.readlines()
 		print(lines)
@@ -79,10 +92,11 @@ if flag.upper() == "Y":
 			extension = ""
 		else:
 			extension = file_path[atpos + 1:]
+			
 		if extension == 'pdf': #do something based on extension
 			pdf(file_path, extension)
 			#pdf_info(file_path)
-		elif extension == 'xls' or extension == 'xlsx' or extension == 'xlsm':
+		elif extension == 'xls' or extension == 'xlsx' or extension == 'xlsm' or extension == 'ods':
 			excel(file_path, extension)
 		elif extension =='txt':
 			text(file_path)
