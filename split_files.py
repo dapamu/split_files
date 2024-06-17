@@ -76,8 +76,8 @@ def text(file):
 		print(lines)
 
 #ask what file to open
-flag = input("Do you want to split a file? Y/N: ")
-#flag = "Y"
+#flag = input("Do you want to split a file? Y/N: ")
+flag = input("Do you want to split a PDF file? Y/N: ")
 
 if flag.upper() == "Y":
 	file_path = filedialog.askopenfilename()
@@ -96,15 +96,16 @@ if flag.upper() == "Y":
 		if extension == 'pdf': #do something based on extension
 			pdf(file_path, extension)
 			#pdf_info(file_path)
-		elif extension == 'xls' or extension == 'xlsx' or extension == 'xlsm' or extension == 'ods':
-			excel(file_path, extension)
-		elif extension =='txt':
-			text(file_path)
+		#elif extension == 'xls' or extension == 'xlsx' or extension == 'xlsm' or extension == 'ods':
+		#	excel(file_path, extension)
+		#elif extension =='txt':
+		#	text(file_path)
 		else: #try to open as text file. if unable, just exit out
-			try:
-				text(file_path)
-			except:
-				print("File type not supported")
+			print("File type is not pdf")
+			#try:
+			#	text(file_path)
+			#except:
+			#	print("File type not supported")
 else:
 	print("No file selected. Exiting...")
 
